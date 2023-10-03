@@ -7,7 +7,6 @@ This is PyTorch implementation for the paper:
 Three collaborative filtering models: 
 
 - Matrix Factorization (GMF)
-
 - Neural Matrix Factorization (NeuMF)
 - Neural Collaborative Filtering(NCF)
 
@@ -29,9 +28,9 @@ As this figure, Isolation means that we divide original dataset into several gro
 
 ## Environment Settings
 
-- PyTorch  == 1.13.0
+- PyTorch versipn : 1.13.0
 
-- POT version:  '0.9.0'
+- POT version : '0.9.0'
 
 ## Example to run the codes.
 
