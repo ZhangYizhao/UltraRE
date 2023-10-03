@@ -30,7 +30,7 @@ As this figure, Isolation means that we divide original dataset into several gro
 
 - PyTorch versipn : 1.13.0
 
-- POT version : '0.9.0'
+- POT version : 0.9.0
 
 ## Example to run the codes.
 
@@ -58,7 +58,7 @@ Also you can add dataset by editing config.py
 
 ## Dataset
 
-We provide one processed datasets: MovieLens 1 Million (ml-1m)  in data/ml1m/
+We provide one processed datasets : MovieLens 1 Million (ml-1m)  in data/ml1m/
 
 ratings.dat : original interaction data
 
