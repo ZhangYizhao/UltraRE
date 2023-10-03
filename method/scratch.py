@@ -5,7 +5,7 @@ from torch import optim
 import torch
 
 from method.utils import seed_all, baseTrain, baseTest
-from method.utils import MF, DMF, GMF, NMF
+from method.utils import MF
 
 
 class Scratch(object):
@@ -46,10 +46,6 @@ class Scratch(object):
             self.is_rmse = True
             # self.loss_fn = nn.BCELoss()
             # self.is_rmse = False
-        elif self.model_type in ['dmf', 'gmf', 'nmf']:
-            self.layers = param.layers
-            self.loss_fn = nn.BCELoss()
-            self.is_rmse = False
 
 
     def train(self, train_data, test_data, test_total=[], verbose=1, save_dir='', id=0, given_model=''):
@@ -61,12 +57,6 @@ class Scratch(object):
         if given_model == '':
             if self.model_type == 'mf':
                 model = MF(self.n_user, self.n_item, self.k).to(self.device)
-            elif self.model_type == 'dmf':
-                model = DMF(self.n_user, self.n_item, self.k, self.layers).to(self.device)
-            elif self.model_type == 'gmf':
-                model = GMF(self.n_user, self.n_item, self.k).to(self.device)
-            elif self.model_type == 'nmf':
-                model = NMF(self.n_user, self.n_item, self.k, self.layers).to(self.device)
         else:
             model = given_model.to(self.device)
 
@@ -77,8 +67,6 @@ class Scratch(object):
                             weight_decay=self.lam,
                             momentum=self.momentum)
             scheduler = optim.lr_scheduler.StepLR(opt, step_size=50, gamma=self.lr_decay)
-        elif self.model_type in ['dmf', 'gmf', 'nmf']:
-            opt = optim.Adam(model.parameters(), lr=self.lr)
 
         # main loop
         for t in range(self.epochs):
@@ -146,14 +134,9 @@ class Scratch(object):
             # model = MF(self.n_user, self.n_item)
             # model.load_state_dict(torch.load('model.pth'))
 
-            if self.model_type in ['mf', 'dmf', 'gmf']:
+            if self.model_type in ['mf']:
                 np.save(save_dir + '/user_mat' + str(id), model.user_mat.cpu().weight.detach().numpy())
                 np.save(save_dir + '/item_mat' + str(id), model.item_mat.cpu().weight.detach().numpy())
-            elif self.model_type == 'nmf':
-                np.save(save_dir + '/user_mat_mf' + str(id), model.user_mat_mf.cpu().weight.detach().numpy())
-                np.save(save_dir + '/item_mat_mf' + str(id), model.item_mat_mf.cpu().weight.detach().numpy())
-                np.save(save_dir + '/user_mat_mlp' + str(id), model.user_mat_mlp.cpu().weight.detach().numpy())
-                np.save(save_dir + '/item_mat_mlp' + str(id), model.item_mat_mlp.cpu().weight.detach().numpy())
             # load mat
             # user_mat = np.load('user_mat.npy')
             # item_mat = np.load('item_mat.npy')
