@@ -63,3 +63,6 @@ We provide one processed datasets : MovieLens 1 Million (ml-1m)  in data/ml1m/
 ratings.dat : original interaction data
 
 pro.ipynb : process data and split the train/test data
+
+## Test
+Run test.ipynb to compare the performance of several clustering methods
