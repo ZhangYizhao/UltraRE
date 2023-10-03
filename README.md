@@ -6,27 +6,17 @@ This is PyTorch implementation for the paper :
 
 Paper Page : "https://neurips.cc/virtual/2023/poster/72617"
 
-Three collaborative filtering models: 
+collaborative filtering model: 
 
 - Matrix Factorization (GMF)
-- Neural Matrix Factorization (NeuMF)
-- Neural Collaborative Filtering (NCF)
 
-Three division methods:
+division method:
 
-- Kmeans
-- Balanced Kmeans
 - OT based clustering
 
-Three unlearning workflow:
+unlearning workflow:
 
 - Isolation (sisa)
-- Sequential (seq)
-- Additive (add)
-
-As this figure, Isolation means that we divide original dataset into several groups and then train models with these groups respectively. Sequential means that we train first model with first group and then fine-tune this model n-1 times with group-i each time. Additive means that we train first model with first group and then fine-tune with groups whose index is less than i each time. (i means the index of group)
-
-![image-20231003153347866](imgs/图片1.png)
 
 ## Environment Settings
 
