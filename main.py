@@ -65,7 +65,7 @@ def main():
         ins.runFull(is_save=True, 
                     verbose=verbose)
     else:
-        group_types = ['emb-ot']#, 'euclidean-lpa', 'euclidean-blpa', 'euclidean-km', 'euclidean-bkm']
+        group_types = ['emb-ot']
         for group_type in group_types:
             ins.runGroup(is_save=True,
                         learn_type=learn_type, 

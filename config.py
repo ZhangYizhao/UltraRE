@@ -5,11 +5,10 @@ import time
 import warnings
 import os
 
-from read import readRating, loadData, readSparseMat, get_gender
+from read import readRating, loadData, readSparseMat
 from read import RatingData
-from method.utils import saveObject, loadObject
+from method.utils import saveObject
 from method.scratch import Scratch
-from method.sequential import Sequential
 from method.sisa import Sisa
 from group import Group, DATA_DIR, SAVE_DIR
 
@@ -265,7 +264,7 @@ class Instance(object):
         
         # load data
         train_dlist, test_dlist = [], []
-        if learn_type in ['seq', 'sisa']:
+        if learn_type in ['sisa']:
             for i in range(n_group):
                 if i == 0:
                     test_total = test_rating[i].copy()
@@ -274,18 +273,7 @@ class Instance(object):
                 train_dlist.append(loadData(RatingData(train_rating[i]), self.param.batch, self.param.n_worker))
                 test_dlist.append(loadData(RatingData(test_rating[i]), self.param.batch, self.param.n_worker, False))
             test_data = loadData(RatingData(test_total), self.param.batch, self.param.n_worker, False)
-        elif learn_type == 'add':
-            for i in range(n_group):
-                if i == 0:
-                    train_cur = train_rating[i].copy()
-                    test_cur = test_rating[i].copy()
-                else:
-                    train_cur = np.hstack((train_cur, train_rating[i]))
-                    test_cur = np.hstack((test_cur, test_rating[i]))
-                train_dlist.append(loadData(RatingData(train_cur), self.param.batch, self.param.n_worker))
-                test_dlist.append(loadData(RatingData(test_cur), self.param.batch, self.param.n_worker, False))
-            test_data = loadData(RatingData(test_cur), self.param.batch, self.param.n_worker, False)
-
+        
         # mkdir
         if is_save ==True:
             save_dir = SAVE_DIR + self.name + '/' + saving_name
@@ -295,9 +283,8 @@ class Instance(object):
             save_dir = ''
 
         # train model
-        if learn_type in ['seq', 'add']:
-            model = Sequential(self.param, model_type, n_group, train_index)
-        elif learn_type == 'sisa':
+ 
+        if learn_type == 'sisa':
             model = Sisa(self.param, model_type, n_group, train_index)
         if is_del == False:
             model.learn(train_dlist, test_dlist, test_data, verbose, save_dir)
@@ -307,9 +294,6 @@ class Instance(object):
                 if rating[0] not in del_user:
                     del_user.append(rating[0])
             model.unlearn(model_list, train_dlist, test_dlist, test_data, del_user, verbose, save_dir)
-            
-        print('End of training', self.name, saving_name)
-        print()
 
         return model.model_list
 
@@ -324,60 +308,17 @@ class Instance(object):
         self.__full(is_save, 'MF_full_train', 'mf', False, verbose)
 
         # retrain from scratch after deletion
-        # self.__full(is_save, 'MF_retrain', 'mf', True, verbose)
-
-        '''model DMF'''
-        # full train without deletion
-        # self.__full(is_save, 'DMF_full_train', 'dmf', False, verbose)
-
-        # retrain from scratch after deletion
-        # self.__full(is_save, 'DMF_retrain', 'dmf', True, verbose)
-
-        '''model NMF'''
-        # full train without deletion
-        # self.__full(is_save, 'NMF_full_train', 'nmf', False, verbose)
-
-        # retrain from scratch after deletion
-        # self.__full(is_save, 'NMF_retrain', 'nmf', True, verbose)
-
-        '''test model'''
-        # self.__full(is_save, 'GMF_full_train', 'gmf', False, verbose)
+        self.__full(is_save, 'MF_retrain', 'mf', True, verbose)
 
     def runGroup(self, is_save=True, learn_type='seq', group_type='uniform', n_group=5, verbose=1):
-        # '''model MF'''
-        # # seq learn with deletion
-        # saving_name = 'MF_' + group_type + '_' + learn_type + '_learn'
-        # model_list = self.__group([], is_save, learn_type, saving_name, 'mf', 
-        #                             False, group_type, n_group, verbose)
-
-        # # seq unlearn with deletion
-        # saving_name = 'MF_' + group_type + '_' + learn_type + '_unlearn'
-        # self.__group(model_list, is_save, learn_type, saving_name, 'mf', 
-        #                 True, group_type, n_group, verbose)
-
-        '''model DMF'''
-        # # seq learn with deletion
-        # saving_name = 'DMF_' + group_type + '_' + learn_type + '_learn'
-        # model_list = self.__group([], is_save, learn_type, saving_name, 'dmf', 
-        #                             False, group_type, n_group, verbose)
-
-        # # seq unlearn with deletion
-        # saving_name = 'DMF_' + group_type + '_' + learn_type + '_unlearn'
-        # self.__group(model_list, is_save, learn_type, saving_name, 'dmf', 
-        #                 True, group_type, n_group, verbose)
-
-        '''model NMF'''
+        '''model MF'''
         # seq learn with deletion
-        saving_name = 'NMF_' + group_type + '_' + learn_type + '_learn'
-        model_list = self.__group([], is_save, learn_type, saving_name, 'nmf', 
+        saving_name = 'MF_' + group_type + '_' + learn_type + '_learn'
+        model_list = self.__group([], is_save, learn_type, saving_name, 'mf', 
                                     False, group_type, n_group, verbose)
 
         # seq unlearn with deletion
-        saving_name = 'NMF_' + group_type + '_' + learn_type + '_unlearn'
-        self.__group(model_list, is_save, learn_type, saving_name, 'nmf', 
+        saving_name = 'MF_' + group_type + '_' + learn_type + '_unlearn'
+        self.__group(model_list, is_save, learn_type, saving_name, 'mf', 
                         True, group_type, n_group, verbose)
 
-        '''test model'''
-        # saving_name = 'GMF_' + group_type + '_' + learn_type + '_learn'
-        # model_list = self.__group([], is_save, learn_type, saving_name, 'gmf', 
-        #                             False, group_type, n_group, verbose)
