@@ -43,17 +43,10 @@ class InsParam(object):
             self.n_user = 6040
             self.n_item = 3416
 
-            if self.del_type == 'test':
-                self.del_user = [4168, 1679]#, 4276, 1940, 1180, 888, 3617, 2062, 1149, 1014]
-            elif self.del_type == 'rand':
+            if self.del_type == 'rand':
                 np.random.seed(0)
-                n_del = 15 if self.del_per == 2 else 30
+                n_del = int(self.del_per * self.n_user)
                 self.del_user = np.random.choice(self.n_user, n_del, replace=False)
-            elif self.del_type == 'top':
-                idx = [4168, 1679, 4276, 1940, 1180,  888, 3617, 2062, 1149, 1014, 5794, 4343, 1979, 2908, 1448, 4509,  423, 4226, 5830, 3390, 3840, 4507, 1087, 5366, 3807,  548, 1284, 3223, 3538, 4542]
-                n_del = 15 if self.del_per == 2 else 30
-                self.del_user = idx[:n_del]
-            self.epochs = 50
         
     def info(self):
         print(self.dataset, '-----------')
@@ -185,6 +178,7 @@ class Instance(object):
     # gunFull, runGroup
     # calling function
     #########################
+    
     def runFull(self, is_save=True, verbose=1):
         '''model MF'''
         # full train without deletion

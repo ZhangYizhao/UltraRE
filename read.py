@@ -31,17 +31,14 @@ def readRating(dir, n_user, max_rating=5, del_user=[], del_rating=[], n_group=1,
             group_index = []
             for i in range(n_group):
                 group_index.append(org_index[i*group_len : (i+1)*group_len])
-    
-    # assert n_group == len(group_index)
 
     rating_lists = []
 
     ratings = pd.read_csv(dir, header=None, sep=',')
-    # n_group = n_group // 2
 
     # sort group index
     if sort in ['d', 'a']:
-        for d in ['toy', 'db', 'ah', 'am', 'ad', 'ml1', 'ml20', 'ml25', 'netf', 'adn', 'ml1n']:
+        for d in ['ml1m']:
             if d in dir:
                 dataset = d
                 break
@@ -52,13 +49,6 @@ def readRating(dir, n_user, max_rating=5, del_user=[], del_rating=[], n_group=1,
         for i in sorted_index:
             group_index.append(tmp_index[i])
 
-        # bidirectional
-        # tmp_index = group_index.copy()
-        # group_index = []
-        
-        # for i in range(n_group):
-        #     group_index.append(tmp_index[i] + tmp_index[-1-i])
-
     del_user = set(del_user)
     del_rating = np.array(del_rating)
 
@@ -67,18 +57,9 @@ def readRating(dir, n_user, max_rating=5, del_user=[], del_rating=[], n_group=1,
         print(group_index[i])
         print(del_user)
         intersetion = set(group_index[i]) - del_user
-        loc = np.in1d(ratings[0], list(intersetion))  # return True/False array, len = ratings[0]
+        loc = np.in1d(ratings[0], list(intersetion))  
         del_user -= intersetion
         ratings_group = ratings[loc]
-        
-        # # delete rating
-        # if len(del_rating) > 0:
-        #     assert len(del_rating.shape) == 2
-        #     l = np.in1d(del_rating[:, 0], group_index[i])
-        #     cur_del_rating = del_rating[l]
-        #     for del_r in cur_del_rating:
-        #         index = ratings_group[(ratings_group[0] == del_r[0]) & (ratings_group[1] == del_r[1])].index
-        #         ratings_group.drop(index=index, inplace=True)
 
         # normalization
         ratings_group = ratings_group.values.T
@@ -86,7 +67,6 @@ def readRating(dir, n_user, max_rating=5, del_user=[], del_rating=[], n_group=1,
 
         rating_lists.append(ratings_group)
 
-    # print(len(rating_lists), len(group_index))
     return rating_lists, group_index
 
 
@@ -159,10 +139,8 @@ def readSparseMat(dir, n_user, n_item, max_rating=5):
     row = ratings[0].astype(int).values
     col = ratings[1].astype(int).values
     val = ratings[2].astype(float).values / max_rating
-    # ind = np.ones_like(val, dtype=int)
 
     val_mat = coo_matrix((val, (row, col)), shape=(n_user, n_item), dtype=np.float16)
-    # ind_mat = coo_matrix((ind, (row, col)), shape=(n_user, n_item), dtype=np.float16)  # set to float! int will cause error in kmeans
 
-    return val_mat.tocsr()#, ind_mat.tocsr()
+    return val_mat.tocsr() #, ind_mat.tocsr()
 

@@ -49,7 +49,7 @@ def main():
     assert args.delper in [2, 5]
     del_per = args.delper
 
-    assert args.deltype in ['rand', 'top', 'test']
+    assert args.deltype in ['rand']
     del_type = args.deltype
 
     # initiate instance
