@@ -10,7 +10,7 @@ Three collaborative filtering models:
 
 - Matrix Factorization (GMF)
 - Neural Matrix Factorization (NeuMF)
-- Neural Collaborative Filtering(NCF)
+- Neural Collaborative Filtering (NCF)
 
 Three division methods:
 
