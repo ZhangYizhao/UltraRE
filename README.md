@@ -8,7 +8,7 @@ Paper Page : "https://neurips.cc/virtual/2023/poster/72617"
 
 collaborative filtering model: 
 
-- Matrix Factorization (GMF)
+- Matrix Factorization (MF)
 
 division method:
 
