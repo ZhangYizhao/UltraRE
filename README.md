@@ -24,7 +24,7 @@ Three unlearning workflow:
 
 As this figure, Isolation means that we divide original dataset into several groups and then train models with these groups respectively. Sequential means that we train first model with first group and then fine-tune this model n-1 times with group-i each time. Additive means that we train first model with first group and then fine-tune with groups whose index is less than i each time. (i means the index of group)
 
-![image-20231003153347866](C:\Users\ianzhang-pc\AppData\Roaming\Typora\typora-user-images\image-20231003153347866.png)
+![image-20231003153347866](imgs/图片1.png)
 
 ## Environment Settings
 
