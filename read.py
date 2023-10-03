@@ -166,17 +166,3 @@ def readSparseMat(dir, n_user, n_item, max_rating=5):
 
     return val_mat.tocsr()#, ind_mat.tocsr()
 
-def get_user_dict(filename='data/ml1n/user_gender.npy'):
-    return np.load(filename, allow_pickle=True).item()
-
-def get_gender(filename='data/ml1n/user_gender.npy'):
-    # gender distribution
-    user_dict = get_user_dict(filename)
-    male_id, female_id = [], []
-    for (k, v) in user_dict.items():
-        if v == 'M':
-            male_id.append(k)
-        else:
-            female_id.append(k)
-
-    return male_id, female_id
