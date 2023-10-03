@@ -1,8 +1,9 @@
 # UltraRE
 
-This is PyTorch implementation for the paper:
+This is PyTorch implementation for the paper :
 
 "UltraRE: Enhancing RecEraser for Recommendation Unlearning via Error Decomposition"
+Paper : "https://neurips.cc/virtual/2023/poster/72617"
 
 Three collaborative filtering models: 
 
