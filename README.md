@@ -1,10 +1,10 @@
 # UltraRE
 
-This is PyTorch implementation for the paper :
+This is PyTorch implementation for the paper published on NeurIPS 2023:
 
 "UltraRE: Enhancing RecEraser for Recommendation Unlearning via Error Decomposition"
 
-Paper Page : [https://neurips.cc/virtual/2023/poster/72617](https://openreview.net/forum?id=93NLxUojvc)
+Paper Page : (https://openreview.net/forum?id=93NLxUojvc)
 
 collaborative filtering model: 
 
